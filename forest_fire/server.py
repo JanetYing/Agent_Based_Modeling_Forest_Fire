@@ -37,10 +37,22 @@ canvas_element = mesa.visualization.CanvasGrid(
     forest_fire_portrayal, 100, 100, 500, 500
 )
 tree_chart = mesa.visualization.ChartModule(
-    [{"Label": label, "Color": color} for (label, color) in COLORS.items()]
+    [
+        {"Label": "On Fire", "Color": "red"},
+        {"Label": "Burned Out", "Color": "black"},
+        {"Label": "Fine Softwood", "Color": TEXTURE_COLORS["softwood"]},  # Use the softwood color
+        {"Label": "Fine Hardwood", "Color": TEXTURE_COLORS["hardwood"]},  # Use the hardwood color
+    ],
+    data_collector_name='datacollector'
 )
 pie_chart = mesa.visualization.PieChartModule(
-    [{"Label": label, "Color": color} for (label, color) in COLORS.items()]
+    [
+        {"Label": "On Fire", "Color": "red"},
+        {"Label": "Burned Out", "Color": "black"},
+        {"Label": "Fine Softwood", "Color": TEXTURE_COLORS["softwood"]},
+        {"Label": "Fine Hardwood", "Color": TEXTURE_COLORS["hardwood"]},
+    ],
+    data_collector_name='datacollector'
 )
 
 model_params = {

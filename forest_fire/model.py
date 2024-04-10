@@ -23,9 +23,10 @@ class ForestFire(mesa.Model):
 
         self.datacollector = mesa.DataCollector(
             {
-                "Fine": lambda m: self.count_type(m, "Fine"),
                 "On Fire": lambda m: self.count_type(m, "On Fire"),
                 "Burned Out": lambda m: self.count_type(m, "Burned Out"),
+                "Fine Softwood": self.count_fine_softwood,  # Counting fine softwood trees
+                "Fine Hardwood": self.count_fine_hardwood,
             }
         )
 
@@ -35,7 +36,7 @@ class ForestFire(mesa.Model):
                 # Determine texture based on softwood_ratio
                 texture = "softwood" if self.random.random() < (softwood_ratio / 100.0) else "hardwood"
                 new_tree = TreeCell((x, y), self, texture)
-                if x == 0 and texture == "softwood":  #condition to start fire based on texture
+                if x == 0:  #condition to start fire based on texture
                     new_tree.condition = "On Fire"
                 self.grid.place_agent(new_tree, (x, y))
                 self.schedule.add(new_tree)
@@ -73,3 +74,14 @@ class ForestFire(mesa.Model):
             if tree.condition == tree_condition:
                 count += 1
         return count
+    
+
+    @staticmethod
+    def count_fine_softwood(model):
+        """Count fine softwood trees."""
+        return sum(1 for tree in model.schedule.agents if tree.texture == "softwood" and tree.condition == "Fine")
+
+    @staticmethod
+    def count_fine_hardwood(model):
+        """Count fine hardwood trees."""
+        return sum(1 for tree in model.schedule.agents if tree.texture == "hardwood" and tree.condition == "Fine")
