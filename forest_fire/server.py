@@ -3,14 +3,13 @@ import mesa
 from .model import ForestFire
 
 COLORS = {
-    "Fine": "#00AA00",  # Green for fine trees
     "On Fire": "#FF4500",  # Bright red for burning trees
-    "Burned Out": "#696969",  # Dark gray for burned-out trees
+    "Burned Out": "#808080",  # Dark gray for burned-out trees
 }
 
-TEXTURE_COLORS = {
-    "softwood": "#008000",  # Green for softwood
-    "hardwood": "#A52A2A",  # Brown for hardwood
+combustibility_COLORS = {
+    "Flammable": "#008000",  # Green for Flammable
+    "Resistant": "#A52A2A",  # Brown for Resistant
 }
 
 
@@ -22,13 +21,13 @@ def forest_fire_portrayal(tree):
     portrayal["x"] = x
     portrayal["y"] = y
     
-    # Use texture colors for healthy trees, distinct colors for other states
+    # Use combustibility colors for healthy trees, distinct colors for other states
     if tree.condition == "On Fire":
         portrayal["Color"] = COLORS["On Fire"]
     elif tree.condition == "Burned Out":
         portrayal["Color"] = COLORS["Burned Out"]
-    else:  # If the tree is fine, use texture color
-        portrayal["Color"] = TEXTURE_COLORS[tree.texture]
+    else:  # If the tree is fine, use combustibility color
+        portrayal["Color"] = combustibility_COLORS[tree.combustibility]
 
     return portrayal
     
@@ -39,18 +38,18 @@ canvas_element = mesa.visualization.CanvasGrid(
 tree_chart = mesa.visualization.ChartModule(
     [
         {"Label": "On Fire", "Color": "red"},
-        {"Label": "Burned Out", "Color": "black"},
-        {"Label": "Fine Softwood", "Color": TEXTURE_COLORS["softwood"]},  # Use the softwood color
-        {"Label": "Fine Hardwood", "Color": TEXTURE_COLORS["hardwood"]},  # Use the hardwood color
+        {"Label": "Burned Out", "Color": COLORS["Burned Out"]},
+        {"Label": "Fine Flammable", "Color": combustibility_COLORS["Flammable"]},  
+        {"Label": "Fine Resistant", "Color": combustibility_COLORS["Resistant"]},  
     ],
     data_collector_name='datacollector'
 )
 pie_chart = mesa.visualization.PieChartModule(
     [
         {"Label": "On Fire", "Color": "red"},
-        {"Label": "Burned Out", "Color": "black"},
-        {"Label": "Fine Softwood", "Color": TEXTURE_COLORS["softwood"]},
-        {"Label": "Fine Hardwood", "Color": TEXTURE_COLORS["hardwood"]},
+        {"Label": "Burned Out", "Color": COLORS["Burned Out"]},
+        {"Label": "Fine Flammable", "Color": combustibility_COLORS["Flammable"]},
+        {"Label": "Fine Resistant", "Color": combustibility_COLORS["Resistant"]},
     ],
     data_collector_name='datacollector'
 )
@@ -59,7 +58,7 @@ model_params = {
     "height": 100,
     "width": 100,
     "density": mesa.visualization.Slider("Tree density", 0.65, 0.01, 1.0, 0.01),
-    "softwood_ratio": mesa.visualization.Slider("Softwood Ratio", 50, 0, 100, 1),  #new slider of texture added
+    "Flammable_ratio": mesa.visualization.Slider("Flammable Tree Ratio", 50, 0, 100, 1),  #new slider of combustibility added
 }
 server = mesa.visualization.ModularServer(
     ForestFire, [canvas_element, tree_chart, pie_chart], "Forest Fire", model_params

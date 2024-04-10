@@ -8,7 +8,7 @@ class ForestFire(mesa.Model):
     Simple Forest Fire model.
     """
 
-    def __init__(self, width=100, height=100, density=0.65,softwood_ratio=50):
+    def __init__(self, width=100, height=100, density=0.65,Flammable_ratio=50):
         """
         Create a new forest fire model.
 
@@ -25,29 +25,22 @@ class ForestFire(mesa.Model):
             {
                 "On Fire": lambda m: self.count_type(m, "On Fire"),
                 "Burned Out": lambda m: self.count_type(m, "Burned Out"),
-                "Fine Softwood": self.count_fine_softwood,  # Counting fine softwood trees
-                "Fine Hardwood": self.count_fine_hardwood,
+                "Fine Flammable": self.count_fine_Flammable,  # Counting fine Flammable trees
+                "Fine Resistant": self.count_fine_Resistant,  # Counting fine Resistant trees
             }
         )
 
         # Place a tree in each cell with Prob = density
         for contents, (x, y) in self.grid.coord_iter():
             if self.random.random() < density:
-                # Determine texture based on softwood_ratio
-                texture = "softwood" if self.random.random() < (softwood_ratio / 100.0) else "hardwood"
-                new_tree = TreeCell((x, y), self, texture)
-                if x == 0:  #condition to start fire based on texture
+                # Determine combustibility based on Flammable_ratio
+                combustibility = "Flammable" if self.random.random() < (Flammable_ratio / 100.0) else "Resistant"
+                new_tree = TreeCell((x, y), self, combustibility)
+                if x == 0:   # Set the condition of all trees in the first column to "On Fire"
                     new_tree.condition = "On Fire"
                 self.grid.place_agent(new_tree, (x, y))
                 self.schedule.add(new_tree)
-            # if self.random.random() < density:
-            #     # Create a tree
-            #     new_tree = TreeCell((x, y), self)
-            #     # Set all trees in the first column on fire.
-            #     if x == 0:
-            #         new_tree.condition = "On Fire"
-            #     self.grid.place_agent(new_tree, (x, y))
-            #     self.schedule.add(new_tree)
+
 
         self.running = True
         self.datacollector.collect(self)
@@ -77,11 +70,11 @@ class ForestFire(mesa.Model):
     
 
     @staticmethod
-    def count_fine_softwood(model):
-        """Count fine softwood trees."""
-        return sum(1 for tree in model.schedule.agents if tree.texture == "softwood" and tree.condition == "Fine")
+    def count_fine_Flammable(model):
+        """Count fine Flammable trees."""
+        return sum(1 for tree in model.schedule.agents if tree.combustibility == "Flammable" and tree.condition == "Fine")
 
     @staticmethod
-    def count_fine_hardwood(model):
-        """Count fine hardwood trees."""
-        return sum(1 for tree in model.schedule.agents if tree.texture == "hardwood" and tree.condition == "Fine")
+    def count_fine_Resistant(model):
+        """Count fine Resistant trees."""
+        return sum(1 for tree in model.schedule.agents if tree.combustibility == "Resistant" and tree.condition == "Fine")

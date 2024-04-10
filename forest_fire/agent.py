@@ -14,7 +14,7 @@ class TreeCell(mesa.Agent):
     practice to give one to each agent anyway.
     """
 
-    def __init__(self, pos, model,texture):
+    def __init__(self, pos, model,combustibility):
         """
         Create a new tree.
         Args:
@@ -24,7 +24,7 @@ class TreeCell(mesa.Agent):
         super().__init__(pos, model)
         self.pos = pos
         self.condition = "Fine"
-        self.texture = texture  # New attribute for texture
+        self.combustibility = combustibility  # New attribute for combustibility
 
     def step(self):
         """
@@ -32,15 +32,10 @@ class TreeCell(mesa.Agent):
         """
         if self.condition == "On Fire":
             for neighbor in self.model.grid.iter_neighbors(self.pos, True):
-                # Introduce texture-based fire spread
+                # Introduce combustibility-based fire spread
                 if neighbor.condition == "Fine":
-                    if self.texture == "softwood" or random.random() < 0.8:  # Assuming softwood burns and spreads easier
+                    if self.combustibility == "Flammable" or random.random() < 0.8:  # Assuming Flammable Wood burns and spreads easier
                         neighbor.condition = "On Fire"
-                    elif self.texture == "hardwood" and random.random() < 0.5:  # Hardwood is less likely to catch fire
+                    elif self.combustibility == "Resistant" and random.random() < 0.5:  # Resistant Wood is less likely to catch fire
                         neighbor.condition = "On Fire"
             self.condition = "Burned Out"
-        # if self.condition == "On Fire":
-        #     for neighbor in self.model.grid.iter_neighbors(self.pos, True):
-        #         if neighbor.condition == "Fine":
-        #             neighbor.condition = "On Fire"
-        #     self.condition = "Burned Out"
