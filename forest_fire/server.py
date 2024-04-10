@@ -30,6 +30,7 @@ model_params = {
     "height": 100,
     "width": 100,
     "density": mesa.visualization.Slider("Tree density", 0.65, 0.01, 1.0, 0.01),
+    "softwood_ratio": mesa.visualization.Slider("Softwood Ratio", 50, 0, 100, 1),  #new slider of texture added
 }
 server = mesa.visualization.ModularServer(
     ForestFire, [canvas_element, tree_chart, pie_chart], "Forest Fire", model_params

@@ -8,7 +8,7 @@ class ForestFire(mesa.Model):
     Simple Forest Fire model.
     """
 
-    def __init__(self, width=100, height=100, density=0.65):
+    def __init__(self, width=100, height=100, density=0.65,softwood_ratio=50):
         """
         Create a new forest fire model.
 
@@ -32,9 +32,10 @@ class ForestFire(mesa.Model):
         # Place a tree in each cell with Prob = density
         for contents, (x, y) in self.grid.coord_iter():
             if self.random.random() < density:
-                texture = self.random.choice(["softwood", "hardwood"])  # Randomly choose a texture  
+                # Determine texture based on softwood_ratio
+                texture = "softwood" if self.random.random() < (softwood_ratio / 100.0) else "hardwood"
                 new_tree = TreeCell((x, y), self, texture)
-                if x == 0 and texture == "softwood":  # Example condition to start fire based on texture
+                if x == 0 and texture == "softwood":  #condition to start fire based on texture
                     new_tree.condition = "On Fire"
                 self.grid.place_agent(new_tree, (x, y))
                 self.schedule.add(new_tree)
