@@ -32,7 +32,7 @@ class ForestFire(mesa.Model):
         # Place a tree in each cell with Prob = density
         for contents, (x, y) in self.grid.coord_iter():
             if self.random.random() < density:
-                texture = self.random.choice(["softwood", "hardwood"])  # Randomly choose a texture
+                texture = self.random.choice(["softwood", "hardwood"])  # Randomly choose a texture  
                 new_tree = TreeCell((x, y), self, texture)
                 if x == 0 and texture == "softwood":  # Example condition to start fire based on texture
                     new_tree.condition = "On Fire"
