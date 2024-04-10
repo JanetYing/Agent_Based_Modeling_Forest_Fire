@@ -2,7 +2,16 @@ import mesa
 
 from .model import ForestFire
 
-COLORS = {"Fine": "#00AA00", "On Fire": "#880000", "Burned Out": "#000000"}
+COLORS = {
+    "Fine": "#00AA00",  # Green for fine trees
+    "On Fire": "#FF4500",  # Bright red for burning trees
+    "Burned Out": "#696969",  # Dark gray for burned-out trees
+}
+
+TEXTURE_COLORS = {
+    "softwood": "#008000",  # Green for softwood
+    "hardwood": "#A52A2A",  # Brown for hardwood
+}
 
 
 def forest_fire_portrayal(tree):
@@ -12,9 +21,17 @@ def forest_fire_portrayal(tree):
     (x, y) = tree.pos
     portrayal["x"] = x
     portrayal["y"] = y
-    portrayal["Color"] = COLORS[tree.condition]
-    return portrayal
+    
+    # Use texture colors for healthy trees, distinct colors for other states
+    if tree.condition == "On Fire":
+        portrayal["Color"] = COLORS["On Fire"]
+    elif tree.condition == "Burned Out":
+        portrayal["Color"] = COLORS["Burned Out"]
+    else:  # If the tree is fine, use texture color
+        portrayal["Color"] = TEXTURE_COLORS[tree.texture]
 
+    return portrayal
+    
 
 canvas_element = mesa.visualization.CanvasGrid(
     forest_fire_portrayal, 100, 100, 500, 500
