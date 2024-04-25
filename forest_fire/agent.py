@@ -66,19 +66,6 @@ class TreeCell(mesa.Agent):
         self.condition = "Fine"
         self.combustibility = combustibility  # New attribute for combustibility
 
-    # def step(self):
-    #     """
-    #     If the tree is on fire, spread it to fine trees nearby.
-    #     """
-    #     if self.condition == "On Fire":
-    #         for neighbor in self.model.grid.iter_neighbors(self.pos, True):
-    #             # Introduce combustibility-based fire spread
-    #             if neighbor.condition == "Fine":
-    #                 if self.combustibility == "Flammable" or random.random() < 0.8:  # Assuming Flammable Wood burns and spreads easier
-    #                     neighbor.condition = "On Fire"
-    #                 elif self.combustibility == "Resistant" and random.random() < 0.5:  # Resistant Wood is less likely to catch fire
-    #                     neighbor.condition = "On Fire"
-    #         self.condition = "Burned Out"
 
     def step(self):
         if self.condition == "On Fire":

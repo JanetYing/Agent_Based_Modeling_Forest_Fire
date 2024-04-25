@@ -11,7 +11,7 @@ class ForestFire(mesa.Model):
     Simple Forest Fire model.
     """
 
-    def __init__(self, width=100, height=100, density=0.65,Flammable_ratio=50, wind_chance=100):
+    def __init__(self, width=100, height=100, density=0.65,Flammable_ratio=50, wind_chance=100, wind_radius=15):
         """
         Create a new forest fire model.
 
@@ -24,6 +24,7 @@ class ForestFire(mesa.Model):
         self.schedule = mesa.time.RandomActivation(self)
         self.grid = MultiGrid(width, height, torus=False)  # Using MultiGrid instead of SingleGrid
         self.wind_chance = wind_chance  # Probability of wind package activation per step
+        self.wind_radius = wind_radius  # New
 
         self.datacollector = mesa.DataCollector(
             {
@@ -77,18 +78,6 @@ class ForestFire(mesa.Model):
             self.running = True
             print("still has tree on fire")
 
-
-    # def step(self):
-    #     """
-    #     Advance the model by one step.
-    #     """
-    #     self.schedule.step()
-    #     # collect data
-    #     self.datacollector.collect(self)
-
-    #     # Halt if no more fire
-    #     if self.count_type(self, "On Fire") == 0:
-    #         self.running = False
 
     @staticmethod
     def count_type(model, tree_condition):

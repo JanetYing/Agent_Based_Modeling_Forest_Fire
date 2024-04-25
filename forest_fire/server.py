@@ -13,24 +13,6 @@ combustibility_COLORS = {
     "Resistant": "#4CC552",  # Brown for Resistant
 }
 
-
-# def forest_fire_portrayal(tree):
-#     if tree is None:
-#         return
-#     portrayal = {"Shape": "rect", "w": 1, "h": 1, "Filled": "true", "Layer": 0}
-#     (x, y) = tree.pos
-#     portrayal["x"] = x
-#     portrayal["y"] = y
-    
-#     # Use combustibility colors for healthy trees, distinct colors for other states
-#     if tree.condition == "On Fire":
-#         portrayal["Color"] = COLORS["On Fire"]
-#     elif tree.condition == "Burned Out":
-#         portrayal["Color"] = COLORS["Burned Out"]
-#     else:  # If the tree is fine, use combustibility color
-#         portrayal["Color"] = combustibility_COLORS[tree.combustibility]
-
-#     return portrayal
 def forest_fire_portrayal(tree):
     if tree is None:
         return
@@ -95,6 +77,8 @@ model_params = {
     "width": 100,
     "density": mesa.visualization.Slider("Tree density", 0.65, 0.01, 1.0, 0.01),
     "Flammable_ratio": mesa.visualization.Slider("Flammable Tree Ratio", 50, 0, 100, 1),  #new slider of combustibility added
+    "wind_chance": mesa.visualization.Slider("Wind Chance", 10, 0, 100, 1),  # Probability in %
+    "wind_radius": mesa.visualization.Slider("Wind Radius", 15, 1, 30, 1)  # Radius in grid cells
 }
 server = mesa.visualization.ModularServer(
     ForestFire, [canvas_element, tree_chart, pie_chart], "Forest Fire", model_params
