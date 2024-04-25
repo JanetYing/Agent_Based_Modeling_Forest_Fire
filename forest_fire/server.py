@@ -46,7 +46,7 @@ def forest_fire_portrayal(tree):
             portrayal["Shape"] = "circle"  # Circular shape to denote the wind's area of effect
         else:
             portrayal["Color"] = "#ADD8E6"  # Light blue for inactive wind packages
-    else:
+    else:  
         # Use existing color coding for trees
         if tree.condition == "On Fire":
             portrayal["Color"] = COLORS["On Fire"]
