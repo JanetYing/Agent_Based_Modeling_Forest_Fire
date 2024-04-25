@@ -1,6 +1,8 @@
 import mesa
+from mesa.space import MultiGrid
 
 from .agent import TreeCell
+from .agent import WindPackage
 from random import randint
 
 
@@ -9,7 +11,7 @@ class ForestFire(mesa.Model):
     Simple Forest Fire model.
     """
 
-    def __init__(self, width=100, height=100, density=0.65,Flammable_ratio=50):
+    def __init__(self, width=100, height=100, density=0.65,Flammable_ratio=50, wind_chance=10):
         """
         Create a new forest fire model.
 
@@ -19,8 +21,10 @@ class ForestFire(mesa.Model):
         """
         super().__init__()
         # Set up model objects
+        super().__init__()
         self.schedule = mesa.time.RandomActivation(self)
-        self.grid = mesa.space.SingleGrid(width, height, torus=False)
+        self.grid = MultiGrid(width, height, torus=False)  # Using MultiGrid instead of SingleGrid
+        self.wind_chance = wind_chance  # Probability of wind package activation per step
 
         self.datacollector = mesa.DataCollector(
             {
@@ -46,17 +50,46 @@ class ForestFire(mesa.Model):
         self.running = True
         self.datacollector.collect(self)
 
+
     def step(self):
-        """
-        Advance the model by one step.
-        """
+        if randint(0, 100) < self.wind_chance:
+            x, y = randint(0, self.grid.width - 1), randint(0, self.grid.height - 1)
+            wind = WindPackage((x, y), self)
+            self.grid.place_agent(wind, (x, y))
+
+            # Check for nearby trees that are "On Fire" before activating
+            nearby_trees_on_fire = any(tree.condition == "On Fire" for tree in self.grid.get_neighbors((x, y), moore=True, include_center=False, radius=wind.radius) if isinstance(tree, TreeCell))
+            if nearby_trees_on_fire:
+                wind.activate()
+                print(f"Wind package activated at ({x}, {y}) due to nearby fire")
+            else:
+                print(f"Wind package placed at ({x}, {y}) but not activated")
+
         self.schedule.step()
-        # collect data
+
+
         self.datacollector.collect(self)
 
-        # Halt if no more fire
+
         if self.count_type(self, "On Fire") == 0:
             self.running = False
+ 
+    
+
+
+
+
+    # def step(self):
+    #     """
+    #     Advance the model by one step.
+    #     """
+    #     self.schedule.step()
+    #     # collect data
+    #     self.datacollector.collect(self)
+
+    #     # Halt if no more fire
+    #     if self.count_type(self, "On Fire") == 0:
+    #         self.running = False
 
     @staticmethod
     def count_type(model, tree_condition):
