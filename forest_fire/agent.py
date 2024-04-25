@@ -70,20 +70,26 @@ class TreeCell(mesa.Agent):
     def step(self):
         if self.condition == "On Fire":
             spread_radius = 1  # Default spread radius without wind
-            for wind in self.model.grid.get_neighbors(self.pos, moore=True, include_center=False, radius=9):
-                if isinstance(wind, WindPackage) and wind.active:
-                    spread_radius = 9  # Increase the spread radius due to active wind
-                    break
+            # Collect all active winds first to assess their combined effect.
+            active_winds = [wind for wind in self.model.grid.get_neighbors(self.pos, moore=True, include_center=False, radius=9)
+                            if isinstance(wind, WindPackage) and wind.active]
 
+            if active_winds:
+                spread_radius = 9  # Increase spread radius due to wind
+
+            # Apply fire spread logic
             for neighbor in self.model.grid.get_neighbors(self.pos, moore=True, include_center=False, radius=spread_radius):
                 if isinstance(neighbor, TreeCell) and neighbor.condition == "Fine":
-                    if self.combustibility == "Flammable" and random.random() < 0.8:
+                    fire_chance = 0.8 if neighbor.combustibility == "Flammable" else 0.5
+                    if random.random() < fire_chance:
                         neighbor.condition = "On Fire"
-                    elif self.combustibility == "Resistant" and random.random() < 0.5:
-                        neighbor.condition = "On Fire"
-            self.condition = "Burned Out"
 
+            self.condition = "Burned Out"  # Tree burns out after spreading fire
 
+            # Deactivate wind that were active this step
+            for wind in active_winds:
+                wind.deactivate()
+                print(f"Wind package at {wind.pos} deactivated after influencing fire spread.")
 
 
 

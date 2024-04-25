@@ -11,7 +11,7 @@ class ForestFire(mesa.Model):
     Simple Forest Fire model.
     """
 
-    def __init__(self, width=100, height=100, density=0.65,Flammable_ratio=50, wind_chance=10):
+    def __init__(self, width=100, height=100, density=0.65,Flammable_ratio=50, wind_chance=100):
         """
         Create a new forest fire model.
 
@@ -63,20 +63,20 @@ class ForestFire(mesa.Model):
                 wind.activate()
                 print(f"Wind package activated at ({x}, {y}) due to nearby fire")
             else:
+                self.grid.remove_agent(wind)
                 print(f"Wind package placed at ({x}, {y}) but not activated")
 
         self.schedule.step()
-
+        print('1')
 
         self.datacollector.collect(self)
-
+        print('2')
 
         if self.count_type(self, "On Fire") == 0:
             self.running = False
- 
-    
-
-
+        else:
+            self.running = True
+            print("still has tree on fire")
 
 
     # def step(self):
