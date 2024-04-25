@@ -55,7 +55,7 @@ canvas_element = mesa.visualization.CanvasGrid(
 tree_chart = mesa.visualization.ChartModule(
     [
         {"Label": "On Fire", "Color": "red"},
-        {"Label": "Burned Out", "Color": COLORS["Burned Out"]},
+        {"Label": "Burned Out", "Color":"black"},
         {"Label": "Fine Flammable", "Color": combustibility_COLORS["Flammable"]},  
         {"Label": "Fine Resistant", "Color": combustibility_COLORS["Resistant"]},  
     ],
@@ -64,7 +64,7 @@ tree_chart = mesa.visualization.ChartModule(
 pie_chart = mesa.visualization.PieChartModule(
     [
         {"Label": "On Fire", "Color": "red"},
-        {"Label": "Burned Out", "Color": COLORS["Burned Out"]},
+        {"Label": "Burned Out", "Color": "black"},
         {"Label": "Fine Flammable", "Color": combustibility_COLORS["Flammable"]},
         {"Label": "Fine Resistant", "Color": combustibility_COLORS["Resistant"]},
     ],
