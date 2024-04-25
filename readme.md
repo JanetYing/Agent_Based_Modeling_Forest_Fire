@@ -1,23 +1,35 @@
 MACS 40550 1 Agent-Based Modeling
-Assignment 1: Parameters & Agents
+Assignment 2: Environment / Updating
 Janet Cao
-Git link: https://github.com/JanetYing/MACSS40550_Assignment1_Parameters-Agents.git
+Word Counts: 842
+Git link: https://github.com/JanetYing/Agent_Based_Modeling_Forest_Fire.git
 
 Background:
-The forest fire model selected from the Mesa examples library serves to simulate the spread of fire across a forested grid, offering insights into the dynamics of fire behavior. The model's initial design aimed to visualize how fire spread through various densities of forested landscapes. My enhancement introduces a categorization of tree combustibility, differentiating trees as either "Highly Combustible" (Flammable) or "Less Combustible" (Resistant), adding a layer of complexity and realism to the simulation. This categorization is inspired by real-world attributes such as texture, moisture content, and the presence of volatile compounds, which influence a tree's likelihood to ignite and sustain combustion.
+The forest fire model is a grid-based simulation that illustrates how fires spread through a forest. Each grid cell can either be empty or contain a tree in one of three states: unburned, on fire, or burned out. Fire propagates from on-fire trees to adjacent unburned trees, which then transition to a burned state. The simulation persists until all fires are extinguished. Initially, the model was designed to explore fire dynamics across different forest densities.
+In the first assignment, I enhanced the model by incorporating tree combustibility, categorizing trees as either "Highly Combustible" (Flammable) or "Less Combustible" (Resistant). This classification allows for varied fire spread behaviors based on tree properties. For this assignment, I have added further complexity and realism by introducing a new Wind class. This models how wind's various activation probability and influence radius impact fire spread dynamics.
 
-Design Concepts: 
-In the enhanced model, tree agents possess a new attribute, “combustibility”, influencing their interaction with fire. This addition allows the simulation to more accurately portray forest fire dynamics, as different tree types react differently to fire. The model’s agent-based structure simulate each tree's firing behavior and state can influence and be influenced by its surroundings.
+Design Concepts:
+In the updated model, wind serves as a dynamic external factor that significantly enhances fire spread among trees. Normally, an "on fire" tree affects only its immediate neighbors with a spread radius of one. However, with the introduction of the Wind class, this influence can extend up to a radius of 30, depending on the wind's generation and intensity(influence radius). The winds are generated randomly at the different location in each step, with its probability and radius of influence. Higher generation probabilities and larger radii increase the likelihood of wind activation, which interacting with on fire trees and spreading fire, and also, we are more likely to observe higher spreading speed and the irregular shape of fire spreading edge. This enhancement brings a new layer of realism to the simulation, demonstrating how natural elements like wind can alter the behavior of forest fires.
 
 Details:
-Key aspects like the grid-based environment, tree density control, discrete step simulation, and the core visualization approach remain unchanged, preserving the model's original framework while integrating new features.
-Initialization: In the model, trees are initialized on a grid where the density parameter determines the overall tree population in the fixed size area. The Flammable_ratio then influences the proportion of these trees that are inherently more prone to burning. I set the condition of all trees in the first column to "On Fire" to initiate the simulation. This setup creates a diverse forest composition, integral to studying how varying propensities to burn affect fire spread.
-Input Data: The model primarily relies on internal parameters (“density” and “Flammable_ratio”) to generate the simulation. 
+At the beginning of the simulation, the model populates a grid based on a specified density, randomly placing trees. Each tree receives a combustibility attribute—either "Flammable" or "Resistant"—based on the Flammable_ratio. This attribute dictates how susceptible a tree is to catching fire from neighboring burning trees.
 
+Integration of Wind Dynamics:
+To add depth to the simulation, I implemented a MultiGrid to accommodate both trees and wind agents in the same grid cells. The WindPackage class represents wind as a dynamic element affecting fire spread. Wind agents have the potential to be generated each model step, with their probability of generation controlled by the wind_chance parameter. When generated, a wind agent checks for any nearby "On Fire" trees within its radius to decide if it should activate. If activated, the wind extends the fire spread radius from the standard 1 to the larger wind_radius defined by the user, altering the usual fire spread patterns. Once a wind agent has influenced fire spread in a step, it is deactivated.
 
-Changes from the Original Model:
-I introduced the “combustibility” parameter, allowing the model to differentiate between flammable and resistant trees. I've refined the logic of fire spread to account for this attribute: Flammable trees have a higher probability of catching and transmitting fire to their neighbors, reflecting a natural propensity to burn more easily. Conversely, Resistant trees are less likely to ignite, simulating a natural fire retardant characteristic. The fire spread logic was also updated to consider this attribute, making the spread of fire contingent not only on proximity but also on the inherent combustibility of each tree. 
-To display these changes, I refined the model's visualization capabilities. Now, as shown in Fig 1, users can clearly see the interactions between individual trees and their neighbors, observing how fire spreads over time. The speed and extent of the spread are influenced by the density (which affects proximity) and the combustibility of the trees, providing an intuitive grasp of how different types of trees influence fire behavior. The visualization also offers numerical counts and percentages of the various types of trees in different states over time, as shown in Fig 2 and 3.
+Visualization Enhancements:
+Distinct colors differentiate between wind statuses and various tree states to enhance visibility. To maintain visual consistency and track wind influence accurately, wind agents feature a “visual_state_changed” attribute. This ensures that any wind activation is visually represented, preventing its color been overrided in subsequent simulation steps.
+
+Interactive Controls:
+I added sliders allow users to modify the probability of wind generation (wind_chance) and the influence radius of active winds (wind_radius). These tools enable users to explore how varying wind conditions impact fire spread dynamics, providing a hands-on approach to understanding forest fire behavior.
+
+Data Collection:
+The model collects data on the count of trees in each state ("On Fire", "Burned Out", "Fine Flammable", and "Fine Resistant") throughout the simulation. This data is vital for assessing the impact of parameters such as tree density, combustibility, and wind effects on the progression and management of forest fires.
 
 Conclusions:
-The enhanced model provides a more detailed and dynamic simulation of forest fires, reflecting the variability found in natural forests. It allows users to explore how different compositions and density of tree combustibility affect fire spread, offering insights useful for forest management and fire prevention strategies. By maintaining the original model's core elements while integrating new features, the enhanced model serves as a tool for education, planning, and research in forest fire behavior and management.
+Enhancements and Capabilities:
+My enhanced version of the forest fire model introduces the WindPackage class, which adds a significant layer of complexity and realism to the simulation. By incorporating wind as a dynamic element, the model not only reflects more realistic fire behavior but also offers a platform to explore the interactions within environmental factors(wind generation and intensity, tree density), tree agent innate characteristic (combustibility), and fire spreading pattern. The ability to adjust wind generation probability and influence radius through interactive sliders allows users to experiment with various scenarios and observe how changes in wind dynamics affect fire propagation.
+
+
+Learning Outcomes:
+Through this model, I gained insights into the significant role wind plays in influencing the spread of forest fires. The simulation reveals how wind can cause fires to spreading across unburned areas, resulting in irregular burn patterns that would be difficult to foresee without incorporating dynamic environmental factors. Additionally, allowing wind agents to coexist with trees on the same grid cells emphasizes the need to account for multiple environmental elements simultaneously when analyzing ecological events. 
