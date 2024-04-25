@@ -1,6 +1,7 @@
 import mesa
 
 from .agent import TreeCell
+from random import randint
 
 
 class ForestFire(mesa.Model):
@@ -30,18 +31,18 @@ class ForestFire(mesa.Model):
             }
         )
 
-        # Place a tree in each cell with Prob = density
         for contents, (x, y) in self.grid.coord_iter():
-            if self.random.random() < density:
+            # Check for tree placement with density probability
+            if randint(0, 100) < density * 100:
                 # Determine combustibility based on Flammable_ratio
-                combustibility = "Flammable" if self.random.random() < (Flammable_ratio / 100.0) else "Resistant"
+                combustibility = "Flammable" if randint(0, 100) < Flammable_ratio else "Resistant"
                 new_tree = TreeCell((x, y), self, combustibility)
-                if x == 0:   # Set the condition of all trees in the first column to "On Fire"
+                if x == 0:  # Set the condition of all trees in the first column to "On Fire"
                     new_tree.condition = "On Fire"
                 self.grid.place_agent(new_tree, (x, y))
                 self.schedule.add(new_tree)
 
-
+                
         self.running = True
         self.datacollector.collect(self)
 
