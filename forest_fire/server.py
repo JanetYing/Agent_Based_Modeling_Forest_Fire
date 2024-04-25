@@ -42,10 +42,16 @@ def forest_fire_portrayal(tree):
     # Check if the agent is a WindPackage
     if isinstance(tree, WindPackage):
         if tree.active:
-            portrayal["Color"] = "#0000FF"  # Blue for active wind packages
+            portrayal["Color"] = "#FF0000" if tree.visual_state_changed else "#0000FF" # Blue for active wind packages
             portrayal["Shape"] = "circle"  # Circular shape to denote the wind's area of effect
+            portrayal["Layer"] = 2  # Ensure wind is on top
+            print(f"Drawing active wind package at ({x}, {y}) with color {portrayal['Color']}")
         else:
-            portrayal["Color"] = "#ADD8E6"  # Light blue for inactive wind packages
+            portrayal["Color"] = "#ADD8E6" if tree.visual_state_changed else "#00BFFF" # Light blue for inactive wind packages
+            portrayal["Layer"] = 2  # Ensure wind is on top
+            print(f"Drawing inactive wind package at ({x}, {y}) with color {portrayal['Color']}")
+        # Reset visual change flag
+        tree.visual_state_changed = False 
     else:  
         # Use existing color coding for trees
         if tree.condition == "On Fire":
@@ -54,6 +60,9 @@ def forest_fire_portrayal(tree):
             portrayal["Color"] = COLORS["Burned Out"]
         else:  # If the tree is fine, use combustibility color
             portrayal["Color"] = combustibility_COLORS[tree.combustibility]
+            # print(f"Drawing fine tree at ({x}, {y}) with color {portrayal['Color']}")
+        portrayal["Layer"] = 1  
+    
 
     return portrayal
 

@@ -112,3 +112,4 @@ class ForestFire(mesa.Model):
     def count_fine_Resistant(model):
         """Count fine Resistant trees."""
         return sum(1 for tree in model.schedule.agents if tree.combustibility == "Resistant" and tree.condition == "Fine")
+    
