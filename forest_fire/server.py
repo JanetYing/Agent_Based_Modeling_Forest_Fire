@@ -4,13 +4,13 @@ from .model import ForestFire
 from .agent import WindPackage
 
 COLORS = {
-    "On Fire": "#FF4500",  # Bright red for burning trees
-    "Burned Out": "#808080",  # Dark gray for burned-out trees
+    "On Fire": "#EB5406",  # Bright red for burning trees
+    "Burned Out": "#EEEEEE",  # Dark gray for burned-out trees
 }
 
 combustibility_COLORS = {
-    "Flammable": "#008000",  # Green for Flammable
-    "Resistant": "#A52A2A",  # Brown for Resistant
+    "Flammable": "#90EE90",  # Green for Flammable
+    "Resistant": "#4CC552",  # Brown for Resistant
 }
 
 
@@ -42,12 +42,12 @@ def forest_fire_portrayal(tree):
     # Check if the agent is a WindPackage
     if isinstance(tree, WindPackage):
         if tree.active:
-            portrayal["Color"] = "#FF0000" if tree.visual_state_changed else "#0000FF" # Blue for active wind packages
+            portrayal["Color"] = "#93FFE8" if tree.visual_state_changed else "#93FFE8" # Blue for active wind packages
             portrayal["Shape"] = "circle"  # Circular shape to denote the wind's area of effect
             portrayal["Layer"] = 2  # Ensure wind is on top
             print(f"Drawing active wind package at ({x}, {y}) with color {portrayal['Color']}")
         else:
-            portrayal["Color"] = "#ADD8E6" if tree.visual_state_changed else "#00BFFF" # Light blue for inactive wind packages
+            portrayal["Color"] = "#93FFE8" if tree.visual_state_changed else "#3B2F2F" # Light blue for inactive wind packages
             portrayal["Layer"] = 2  # Ensure wind is on top
             print(f"Drawing inactive wind package at ({x}, {y}) with color {portrayal['Color']}")
         # Reset visual change flag
@@ -62,7 +62,7 @@ def forest_fire_portrayal(tree):
             portrayal["Color"] = combustibility_COLORS[tree.combustibility]
             # print(f"Drawing fine tree at ({x}, {y}) with color {portrayal['Color']}")
         portrayal["Layer"] = 1  
-    
+        
 
     return portrayal
 

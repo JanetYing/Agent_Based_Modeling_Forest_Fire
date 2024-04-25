@@ -19,7 +19,6 @@ class ForestFire(mesa.Model):
             width, height: The size of the grid to model
             density: What fraction of grid cells have a tree in them.
         """
-        super().__init__()
         # Set up model objects
         super().__init__()
         self.schedule = mesa.time.RandomActivation(self)
