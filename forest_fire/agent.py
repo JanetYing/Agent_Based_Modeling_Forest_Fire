@@ -16,23 +16,20 @@ class WindPackage(mesa.Agent):
         self.pos = pos
         self.radius = radius
         self.active = False  # Wind packages activate randomly
-        self.need_visual_update = True
+  
         self.visual_state_changed = True  # Initialize this attribute
 
     def activate(self):
         if not self.active:
             self.active = True
-            self.need_visual_update = True
             self.visual_state_changed = True
 
     def deactivate(self):
         if self.active:
             self.active = False
-            self.need_visual_update = True
             self.visual_state_changed = True
 
     def step(self):
-        # Assuming some logic for auto-activation
         if not self.active:  
             self.activate()
         # Reset the visual state change flag after it's been used for visualization

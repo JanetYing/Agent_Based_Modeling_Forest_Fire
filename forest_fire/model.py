@@ -24,7 +24,7 @@ class ForestFire(mesa.Model):
         self.schedule = mesa.time.RandomActivation(self)
         self.grid = MultiGrid(width, height, torus=False)  # Using MultiGrid instead of SingleGrid
         self.wind_chance = wind_chance  # Probability of wind package activation per step
-        self.wind_radius = wind_radius  # New
+        self.wind_radius = wind_radius  # Wind influence radius
 
         self.datacollector = mesa.DataCollector(
             {
