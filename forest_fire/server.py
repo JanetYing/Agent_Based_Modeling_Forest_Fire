@@ -27,11 +27,11 @@ def forest_fire_portrayal(tree):
             portrayal["Color"] = "#93FFE8" if tree.visual_state_changed else "#93FFE8"
             portrayal["Shape"] = "circle" 
             portrayal["Layer"] = 2  # Ensure wind is on top
-            print(f"Drawing active wind package at ({x}, {y}) with color {portrayal['Color']}")
+            # print(f"Drawing active wind package at ({x}, {y}) with color {portrayal['Color']}")
         else:
             portrayal["Color"] = "#93FFE8" if tree.visual_state_changed else "#3B2F2F" # Black for inactive wind packages
             portrayal["Layer"] = 2  # Ensure wind is on top
-            print(f"Drawing inactive wind package at ({x}, {y}) with color {portrayal['Color']}")
+            # print(f"Drawing inactive wind package at ({x}, {y}) with color {portrayal['Color']}")
         # Reset visual change flag
         tree.visual_state_changed = False 
     else:  
@@ -80,7 +80,8 @@ model_params = {
     "wind_radius": mesa.visualization.Slider("Wind Influence Radius", 15, 1, 30, 1)  # Radius in grid cells
 }
 server = mesa.visualization.ModularServer(
-    ForestFire, [canvas_element, tree_chart, pie_chart], "Forest Fire", model_params
+    ForestFire, [canvas_element], "Forest Fire", model_params
+    # , tree_chart, pie_chart
 )
 
 if __name__ == "__main__":

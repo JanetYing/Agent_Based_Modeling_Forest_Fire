@@ -15,7 +15,7 @@ class WindPackage(mesa.Agent):
         super().__init__(pos, model)
         self.pos = pos
         self.radius = radius
-        self.active = False  # Wind packages activate randomly
+        self.active = False  
   
         self.visual_state_changed = True  # Initialize this attribute
 
@@ -86,7 +86,7 @@ class TreeCell(mesa.Agent):
             # Deactivate wind that were active this step
             for wind in active_winds:
                 wind.deactivate()
-                print(f"Wind package at {wind.pos} deactivated after influencing fire spread.")
+                # print(f"Wind package at {wind.pos} deactivated after influencing fire spread.")
 
 
 
